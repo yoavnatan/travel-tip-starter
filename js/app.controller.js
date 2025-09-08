@@ -112,6 +112,7 @@ function onAddLoc(geo) {
         rate: +prompt(`Rate (1-5)`, '3'),
         geo
     }
+    console.log(loc)
     locService.save(loc)
         .then((savedLoc) => {
             flashMsg(`Added Location (id: ${savedLoc.id})`)
