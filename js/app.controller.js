@@ -69,7 +69,8 @@ function renderLocs(locs) {
 }
 
 function onRemoveLoc(locId) {
-    locService.remove(locId)
+    askUser(locId)
+        .then(locService.remove)
         .then(() => {
             flashMsg('Location removed')
             unDisplayLoc()
@@ -79,6 +80,14 @@ function onRemoveLoc(locId) {
             console.error('OOPs:', err)
             flashMsg('Cannot remove location')
         })
+}
+
+function askUser(locId) {
+    const ans = confirm('are you sure?')
+    console.log(ans)
+    if (!ans) return Promise.reject()
+    return Promise.resolve(locId)
+
 }
 
 function onSearchAddress(ev) {
@@ -223,7 +232,7 @@ function getFilterByFromQueryParams() {
     const queryParams = new URLSearchParams(window.location.search)
     const txt = queryParams.get('txt') || ''
     const minRate = queryParams.get('minRate') || 0
-    locService.setFilterBy({txt, minRate})
+    locService.setFilterBy({ txt, minRate })
 
     document.querySelector('input[name="filter-by-txt"]').value = txt
     document.querySelector('input[name="filter-by-rate"]').value = minRate
@@ -314,3 +323,5 @@ function cleanStats(stats) {
     }, [])
     return cleanedStats
 }
+
+
