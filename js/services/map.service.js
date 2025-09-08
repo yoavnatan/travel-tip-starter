@@ -40,6 +40,7 @@ function lookupAddressGeo(geoOrAddress) {
     url += (geoOrAddress.lat) ? `latlng=${geoOrAddress.lat},${geoOrAddress.lng}` :
         `address=${geoOrAddress}`
 
+    console.log(url)
     return fetch(url)
         .then(res => res.json())
         .then(res => {
@@ -63,6 +64,7 @@ function lookupAddressGeo(geoOrAddress) {
 function addClickListener(cb) {
     gMap.addListener('click', (mapsMouseEvent) => {
         const geo = { lat: mapsMouseEvent.latLng.lat(), lng: mapsMouseEvent.latLng.lng() }
+        console.log(geo)
         lookupAddressGeo(geo).then(cb)
     })
 }

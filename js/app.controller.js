@@ -104,7 +104,6 @@ function onSearchAddress(ev) {
 }
 
 function onAddLoc(geo) {
-    console.log(geo)
     const locName = prompt('Loc name', geo.address || 'Just a place')
     if (!locName) return
 
