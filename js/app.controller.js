@@ -5,6 +5,8 @@ import { mapService } from './services/map.service.js'
 window.onload = onInit
 
 let gUserPos = {}
+let gLocToSave
+let gLocToNotSave
 
 // To make things easier in this project structure 
 // functions that are called from DOM are defined on a global app object
@@ -18,6 +20,7 @@ window.app = {
     onShareLoc,
     onSetSortBy,
     onSetFilterBy,
+    onSaveLoc,
 }
 
 function onInit() {
@@ -35,6 +38,7 @@ function onInit() {
 }
 
 function renderLocs(locs) {
+    console.log('locs', locs)
     const selectedLocId = getLocIdFromQueryParams()
 
     var strHTML = locs.map(loc => {
@@ -107,16 +111,11 @@ function onSearchAddress(ev) {
 }
 
 function onAddLoc(geo) {
-    const locName = prompt('Loc name', geo.address || 'Just a place')
-    if (!locName) return
 
-    const loc = {
-        name: locName,
-        rate: +prompt(`Rate (1-5)`, '3'),
-        geo
-    }
-    console.log(loc)
-    locService.save(loc)
+    // const locName = prompt('Loc name', geo.address || 'Just a place')
+    openAddModal(geo)
+        .then(loc => ({ name: loc.locName, rate: loc.locRate, geo }))
+        .then(locService.save)
         .then((savedLoc) => {
             flashMsg(`Added Location (id: ${savedLoc.id})`)
             utilService.updateQueryParams({ locId: savedLoc.id })
@@ -127,6 +126,30 @@ function onAddLoc(geo) {
             flashMsg('Cannot add location')
         })
 }
+
+function openAddModal(geo) {
+    document.querySelector('.add-or-update-modal .loc-name').value = geo.address
+    document.querySelector('.add-or-update-modal .loc-rate').value = 5
+    const elModal = document.querySelector('.add-or-update-modal')
+    elModal.showModal()
+    return new Promise((resolve, reject) => {
+        gLocToSave = resolve
+        gLocToNotSave = reject
+    })
+}
+
+function onSaveLoc() {
+    const locName = document.querySelector('.add-or-update-modal .loc-name').value
+    const locRate = document.querySelector('.add-or-update-modal .loc-rate').value
+    if (!locName) {
+        flashMsg('Enter name')
+        return
+    }
+    gLocToSave({ locName, locRate })
+    document.querySelector('.add-or-update-modal').close()
+}
+
+
 
 function loadAndRenderLocs() {
     locService.query()
@@ -190,14 +213,14 @@ function displayLoc(loc) {
 
     mapService.panTo(loc.geo)
     mapService.setMarker(loc)
-    
+
 
 
     const el = document.querySelector('.selected-loc')
     el.querySelector('.loc-name').innerText = loc.name
     el.querySelector('.loc-address').innerText = loc.geo.address
     if (gUserPos.lat > 0 && gUserPos.lng > 0) {
-        el.querySelector('.loc-distance').innerText = utilService.getDistance(gUserPos,loc.geo)
+        el.querySelector('.loc-distance').innerText = utilService.getDistance(gUserPos, loc.geo)
     }
     el.querySelector('.loc-rate').innerHTML = '★'.repeat(loc.rate)
     el.querySelector('[name=loc-copier]').value = window.location
@@ -289,7 +312,7 @@ function renderLocStats() {
 
 function renderlastUpdateStats() {
     locService.getLocCountByUpdate().then(stats => {
-      handleStats(stats, 'loc-stats-update')
+        handleStats(stats, 'loc-stats-update')
     })
 }
 

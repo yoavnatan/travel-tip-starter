@@ -12,7 +12,8 @@
     <header>
         <h1>TravelTip</h1>
         <section class="selected-loc">
-            <h2>Location: <span class="loc-name"></span> <span class="loc-distance"></span> <span class="loc-rate"></span></h2>
+            <h2>Location: <span class="loc-name"></span> <span class="loc-distance"></span> <span
+                    class="loc-rate"></span></h2>
             <h4 class="loc-address"></h4>
             <button onclick="app.onCopyLoc()">Copy location</button>
             <button onclick="app.onShareLoc()">Share location</button>
@@ -75,6 +76,13 @@
     </main>
     <pre class="debug" hidden></pre>
     <div class="user-msg"></div>
+    <dialog class="add-or-update-modal">
+        <form method="dialog">
+            <input type="text" class="loc-name" id="loc-name" name="loc-name">
+            <input type="number" class="loc-rate" id="loc-rate" name="loc-rate">
+            <buton onclick="app.onSaveLoc()">Save</buton>
+        </form>
+    </dialog>
     <script type="module" src="js/app.controller.js"></script>
 
 

@@ -55,7 +55,7 @@ function lookupAddressGeo(geoOrAddress) {
                 lng: geometry.location.lng,
                 zoom: gMap.getZoom()
             }
-            // console.log('GEO IS', geo)
+            console.log('GEO IS', geo)
             return geo
         })
 
