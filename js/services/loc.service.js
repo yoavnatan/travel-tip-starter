@@ -66,6 +66,7 @@ function getById(locId) {
     return storageService.get(DB_KEY, locId)
 }
 
+
 function remove(locId) {
     return storageService.remove(DB_KEY, locId)
 }

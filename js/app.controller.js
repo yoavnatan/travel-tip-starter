@@ -6,7 +6,7 @@ window.onload = onInit
 
 let gUserPos = {}
 let gLocToSave
-let gLocToNotSave
+let gLocNotSave
 
 // To make things easier in this project structure 
 // functions that are called from DOM are defined on a global app object
@@ -21,6 +21,7 @@ window.app = {
     onSetSortBy,
     onSetFilterBy,
     onSaveLoc,
+    openUpdateModal,
 }
 
 function onInit() {
@@ -112,7 +113,6 @@ function onSearchAddress(ev) {
 
 function onAddLoc(geo) {
 
-    // const locName = prompt('Loc name', geo.address || 'Just a place')
     openAddModal(geo)
         .then(loc => ({ name: loc.locName, rate: loc.locRate, geo }))
         .then(locService.save)
@@ -127,29 +127,43 @@ function onAddLoc(geo) {
         })
 }
 
+
 function openAddModal(geo) {
+    document.querySelector('.add-or-update-modal').removeAttribute('data-loc-id')
     document.querySelector('.add-or-update-modal .loc-name').value = geo.address
     document.querySelector('.add-or-update-modal .loc-rate').value = 5
     const elModal = document.querySelector('.add-or-update-modal')
     elModal.showModal()
     return new Promise((resolve, reject) => {
         gLocToSave = resolve
-        gLocToNotSave = reject
     })
 }
 
 function onSaveLoc() {
+    const locId = document.querySelector('.add-or-update-modal').getAttribute('data-loc-id')
     const locName = document.querySelector('.add-or-update-modal .loc-name').value
     const locRate = document.querySelector('.add-or-update-modal .loc-rate').value
-    if (!locName) {
-        flashMsg('Enter name')
+    if (!locId) {
+        if (!locName) {
+            flashMsg('Enter name')
+            return
+        }
+
+        gLocToSave({ locName, locRate })
         return
     }
-    gLocToSave({ locName, locRate })
-    document.querySelector('.add-or-update-modal').close()
+    locService.getById(locId)
+        .then(loc => {
+            if (locRate === loc.rate) {
+                gLocNotSave('nothing to update')
+            }
+            loc.name = locName
+            loc.rate = locRate
+            return loc
+        })
+        .then(loc => gLocToSave(loc))
+
 }
-
-
 
 function loadAndRenderLocs() {
     locService.query()
@@ -181,21 +195,33 @@ function onPanToUserPos() {
 function onUpdateLoc(locId) {
     locService.getById(locId)
         .then(loc => {
-            const rate = prompt('New rate?', loc.rate)
-            if (rate && rate !== loc.rate) {
-                loc.rate = rate
-                locService.save(loc)
-                    .then(savedLoc => {
-                        flashMsg(`Rate was set to: ${savedLoc.rate}`)
-                        loadAndRenderLocs()
-                    })
-                    .catch(err => {
-                        console.error('OOPs:', err)
-                        flashMsg('Cannot update location')
-                    })
-
-            }
+            console.log(loc)
+            return loc
         })
+        .then(openUpdateModal)
+        .then(locService.save)
+        .then(savedLoc => {
+            flashMsg(`Rate was set to: ${savedLoc.rate}`)
+            loadAndRenderLocs()
+        })
+        .catch(err => {
+            console.error('OOPs:', err)
+            flashMsg(err)
+        })
+}
+
+
+function openUpdateModal(loc) {
+    document.querySelector('.add-or-update-modal .loc-name').value = loc.name
+    document.querySelector('.add-or-update-modal .loc-rate').value = loc.rate
+    document.querySelector('.add-or-update-modal').setAttribute('data-loc-id', loc.id)
+    const elModal = document.querySelector('.add-or-update-modal')
+    elModal.showModal()
+    return new Promise((resolve, reject) => {
+        gLocToSave = resolve
+        gLocNotSave = reject
+    })
+
 }
 
 function onSelectLoc(locId) {
