@@ -156,6 +156,7 @@ function onSaveLoc() {
         .then(loc => {
             if (locRate === loc.rate) {
                 gLocNotSave('nothing to update')
+                return
             }
             loc.name = locName
             loc.rate = locRate
