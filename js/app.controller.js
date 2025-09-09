@@ -4,6 +4,8 @@ import { mapService } from './services/map.service.js'
 
 window.onload = onInit
 
+let gUserPos = {}
+
 // To make things easier in this project structure 
 // functions that are called from DOM are defined on a global app object
 window.app = {
@@ -140,6 +142,10 @@ function onPanToUserPos() {
             mapService.panTo({ ...latLng, zoom: 15 })
             unDisplayLoc()
             loadAndRenderLocs()
+            gUserPos = {
+                lat: latLng.lat,
+                lng: latLng.lng
+            }
             flashMsg(`You are at Latitude: ${latLng.lat} Longitude: ${latLng.lng}`)
         })
         .catch(err => {
