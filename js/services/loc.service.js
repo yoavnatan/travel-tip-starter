@@ -101,17 +101,19 @@ function getLocCountByRateMap() {
 }
 
 function getLocCountByUpdate() {
-    storageService.query(DB_KEY)
+    const now = new Date()
+    return storageService.query(DB_KEY)
         .then(locs => {
-            const locCountByRateMap = locs.reduce((map, loc) => {
-                if (loc.createdAt - loc.updatedAt === 0) never++
-                else if (new Date(loc.updatedAt).getDate() === today.getDate() &&
-                    new Date(loc.updatedAt).getMonth() === today.getMonth() &&
-                    new Date(loc.updatedAt).getFullYear() === today.getFullYear()) today++
-                else past++
+            const locCountByUpdate = locs.reduce((map, loc) => {
+                if (loc.createdAt - loc.updatedAt === 0) map.never++
+                else if (new Date(loc.updatedAt).getDate() === now.getDate() &&
+                    new Date(loc.updatedAt).getMonth() === now.getMonth() &&
+                    new Date(loc.updatedAt).getFullYear() === now.getFullYear()) map.today++
+                else map.past++
+                return map
             }, { today: 0, past: 0, never: 0 })
-            locCountByRateMap.total = locs.length
-            return locCountByRateMap
+            locCountByUpdate.total = locs.length
+            return locCountByUpdate
         })
 }
 
