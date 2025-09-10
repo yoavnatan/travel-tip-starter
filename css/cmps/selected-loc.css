@@ -6,12 +6,14 @@
     overflow: hidden;
     transition: .5s;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 15px ;
 }
 
 .selected-loc.show {
     height: auto;
     max-height: 15em;
     padding: 0.5em;
+    border-radius: 15px ;
 }
 
 .selected-loc input[name=loc-copier] {
