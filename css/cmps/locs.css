@@ -1,9 +1,8 @@
 .locs-container {
     background-color: var(--bg4);
     padding: 0.5em;
-    min-height: 100vh;
     border-radius: 15px;
-    margin: 10px;
+    margin-block: 1em;
 }
 
 .loc-list {
@@ -20,6 +19,7 @@
     background-color: var(--bg3);
     transition: 0.4s scale;
 }
+
 .loc-list li h4 {
     display: flex;
     justify-content: space-between;
@@ -31,7 +31,7 @@
     scale: 1.03;
 }
 
-.loc-list li.active .muted{
+.loc-list li.active .muted {
     color: var(--color4);
 }
 
@@ -58,6 +58,7 @@
     width: 2em;
     height: 2em;
 }
+
 .btn-user-pos:hover {
     background-color: whitesmoke;
 }
@@ -79,11 +80,13 @@
     border-radius: 50%;
     /* background-image: conic-gradient(orange 0%, orange 64%, blue 64%, blue 81%, black 81%, black 100%); */
 }
+
 .loc-stats {
     background-color: var(--bg4);
     border-radius: 15px;
     padding: 0.3em;
 }
+
 .loc-stats ul {
     list-style-type: none;
     display: inline-block;
@@ -98,6 +101,8 @@
     margin-inline-end: 0.3em;
 }
 
-.loc-stats h3,h4,li {
+.loc-stats h3,
+h4,
+li {
     color: var(--bg1);
 }

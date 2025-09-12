@@ -22,6 +22,7 @@ window.app = {
     onSetFilterBy,
     onSaveLoc,
     openUpdateModal,
+    onToggleTheme
 }
 
 function onInit() {
@@ -394,3 +395,6 @@ function cleanStats(stats) {
 }
 
 
+function onToggleTheme() {
+    document.body.classList.toggle('another')
+}

@@ -24,41 +24,42 @@
             <button title="Search">🔍</button>
             <button type="button" title="My Position" onclick="app.onPanToUserPos()" class="btn-user-pos">&nbsp;
             </button>
+            <button type="button" onclick="app.onToggleTheme()">Change Theme</button>
         </form>
     </header>
     <main>
         <div class="map"></div>
-        <div class="main-container">       
-                <section class="locs-container">
-                    <section class="loc-filter">
-                        <div>
-                            <input name="filter-by-txt" type="text" placeholder="Search location"
-                                oninput="app.onSetFilterBy({txt: this.value})" />
-                        </div>
-                        <div>
-                            <label>
-                                Min Rate:
-                                <input name="filter-by-rate" type="range" min="0" max="5" value="0"
-                                    class="filter-rate-range"
-                                    onchange="this.title=this.value;app.onSetFilterBy({minRate: this.value})" />
-                            </label>
-                        </div>
-                        <p>
-                            Sort by:
-                            <select class="sort-by" onchange="app.onSetSortBy()">
-                                <option value="name">Name</option>
-                                <option value="rate" selected>Rate</option>
-                                <option value="createdAt">Creation time</option>
-                            </select>
-                            <label>
-                                <input class="sort-desc" type="checkbox" oninput="app.onSetSortBy()" />
-                                Descending
-                            </label>
-                        </p>
-                    </section>
-                    <h3>Locations</h3>
-                    <ul class="loc-list"></ul>
+        <div class="main-container">
+            <section class="locs-container">
+                <section class="loc-filter">
+                    <div>
+                        <input name="filter-by-txt" type="text" placeholder="Search location"
+                            oninput="app.onSetFilterBy({txt: this.value})" />
+                    </div>
+                    <div>
+                        <label>
+                            Min Rate:
+                            <input name="filter-by-rate" type="range" min="0" max="5" value="0"
+                                class="filter-rate-range"
+                                onchange="this.title=this.value;app.onSetFilterBy({minRate: this.value})" />
+                        </label>
+                    </div>
+                    <p>
+                        Sort by:
+                        <select class="sort-by" onchange="app.onSetSortBy()">
+                            <option value="name">Name</option>
+                            <option value="rate" selected>Rate</option>
+                            <option value="createdAt">Creation time</option>
+                        </select>
+                        <label>
+                            <input class="sort-desc" type="checkbox" oninput="app.onSetSortBy()" />
+                            Descending
+                        </label>
+                    </p>
                 </section>
+                <h3>Locations</h3>
+                <ul class="loc-list"></ul>
+            </section>
             <section class="loc-stats">
                 <h3>Statistics</h3>
                 <div class="loc-stats-rate">
