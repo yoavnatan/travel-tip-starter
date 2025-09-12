@@ -1,7 +1,6 @@
 # TravelTip
 #### The app that gets you somewhere
 
-
 ## Description
 TravelTip is an app that keeps a list of favorite locations
 
@@ -11,8 +10,6 @@ TravelTip is an app that keeps a list of favorite locations
 - The User can pan the map to his own geo-location
 - Once the user pan the map to his location, the app indicated the distance to the saved locations.
 - There are statistics pies showing the locations grouped by update time and  by rate
-
-
 
 ## Locations CRUDL 
 - Create – click on the map prompts for name and rate
@@ -28,68 +25,5 @@ TravelTip is an app that keeps a list of favorite locations
 - Reflected in query params 
 - Copy url to clipboard
 - Share via Web-Share API
-
-## Location
-Here is the format of the location object:
-```js
-{
-    id: 'GEouN',
-    name: 'Dahab, Egypt',
-    rate: 5,
-    geo: {
-      address: 'Dahab, South Sinai, Egypt',
-      lat: 28.5096676,
-      lng: 34.5165187,
-      zoom: 11
-    },
-    createdAt: 1706562160181,
-    updatedAt: 1706562160181
-  }
-  ```
-## Services
-```js
-export const locService = {
-    query,
-    getById,
-    remove,
-    save,
-    setFilterBy,
-    setSortBy,
-    getLocCountByRateMap
-}
-
-export const mapService = {
-    initMap,
-    getPosition,
-    setMarker,
-    panTo,
-    lookupAddressGeo,
-    addClickListener
-}
-```
-
-## Controller
-```js
-// To make things easier in this project structure 
-// functions that are called from DOM are defined on a global app object
-
-window.app = {
-    onRemoveLoc,
-    onUpdateLoc,
-    onSelectLoc,
-    onPanToUserPos,
-    onSearchAddress,
-    onCopyLoc,
-    onShareLoc,
-    onSetSortBy,
-    onSetFilterBy
-}
-```
-
-Here is a sample usage:
-```html
-<button onclick="app.onCopyLoc()">Copy location</button>
-<button onclick="app.onShareLoc()">Share location</button>
-```
-
+- The distance from current location is displayed
 
